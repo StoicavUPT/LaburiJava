@@ -4,10 +4,9 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintStream;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Scanner;
 
-public class ex2 {
+public class Ex2 {
     public static void main(String[] args) throws FileNotFoundException {
         var word = "llo";
         var scan = new Scanner(new File("src/Lab2/ex2/cantec_in.txt"));
