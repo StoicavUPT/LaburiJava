@@ -8,7 +8,15 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 
+
+//luam variabila in care pastram numele fisierului binar , ne facem o const
+//facem cu alte tipuri de .getclass
+//pattern matching instance of
 public class MainProgram {
+
+
+    final static public String fisBinar="src/Lab4/echip.bin";
+    final static public String fisTxt="src/Lab4/echipamente.txt";
 
     public static void showMenu(){
         System.out.println("\n========== MENIU ==========");
@@ -27,10 +35,9 @@ public class MainProgram {
         System.out.print("Selectati o optiune: ");
     }
 
-    static void scrie(Object echipamente) {
+    static void serialize(Object echipamente) {
         try {
-            var fis = "src/Lab4/echip.bin";
-            FileOutputStream f = new FileOutputStream(fis);
+            FileOutputStream f = new FileOutputStream(fisBinar);
             ObjectOutputStream oos = new ObjectOutputStream(f);
             oos.writeObject(echipamente);
             oos.close();
@@ -41,10 +48,9 @@ public class MainProgram {
         }
     }
 
-    static ArrayList<Echipament> citeste() {
+    static ArrayList<Echipament> deserialize() {
         try {
-            var fis = "src/Lab4/echip.bin";
-            FileInputStream f = new FileInputStream(fis);
+            FileInputStream f = new FileInputStream(fisBinar);
             ObjectInputStream ois = new ObjectInputStream(f);
             Object o=ois.readObject();
             ois.close();
@@ -81,7 +87,7 @@ public class MainProgram {
 
     public static void showSistemeCalcul(ArrayList<Echipament> echipamente){
         for(var e : echipamente){
-            if(e.getClass() == SistemDeCalcul.class){
+            if(e instanceof SistemDeCalcul){
                 System.out.println(e);
             }
         }
@@ -89,7 +95,7 @@ public class MainProgram {
 
     public static void showCopiatoare(ArrayList<Echipament> echipamente){
         for(var e : echipamente){
-            if(e.getClass() == Copiator.class){
+            if(Copiator.class.isInstance(e)){
                 System.out.println(e);
             }
         }
@@ -125,20 +131,16 @@ public class MainProgram {
     public static void modificareModScriere(ArrayList<Echipament> echipamente){
         var scan =  new Scanner(System.in);
         var inv = getNrinventar();
-        Echipament e = null;
-        for(var echipament: echipamente){
-            if(echipament.getClass() == Imprimanta.class && echipament.getNr_inv() == inv){
-                e = echipament;
-                break;
-            }
-        }
-        if(e == null){
-            System.out.println("Nu a fost gasit o imprimanta cu numarul de inventar "+inv);
-            return;
-        }
         System.out.print("Introduceti Modul de scriere "+ Arrays.toString(ModTiparire.values())+" :");
         var mod = scan.next();
-        ((Imprimanta) e).setModTiparire(ModTiparire.valueOf(mod.toUpperCase()));
+
+        for(var echipament: echipamente){
+            if(echipament instanceof Imprimanta i && echipament.getNr_inv() == inv){
+                i.setModTiparire(ModTiparire.valueOf(mod.toUpperCase()));
+                return;
+            }
+        }
+        System.out.println("Nu a fost gasit o imprimanta cu numarul de inventar "+inv);
 
     }
 
@@ -185,7 +187,7 @@ public class MainProgram {
 
 
     public static void main(String[] args) throws FileNotFoundException {
-        var fileScan = new Scanner(new File("src/Lab4/echipamente.txt"));
+        var fileScan = new Scanner(new File(fisTxt));
         var echipamente = new ArrayList<Echipament>();
         var processedLines = new ArrayList<ArrayList<String>>();
         while (fileScan.hasNextLine()) {
@@ -222,6 +224,10 @@ public class MainProgram {
                     var c_hdd  = Integer.parseInt(line.get(8));
                     var sistemOperare = SistemOperare.valueOf(line.get(9).toUpperCase());
                     echipamente.add(new SistemDeCalcul(nume,nr_inv,pret,zona_mag,status,tip_mon,vit_proc,c_hdd,sistemOperare));
+                    break;
+                }
+                default:{
+                    System.out.println("Tip de echipament necunoscut!");
                     break;
                 }
             }
@@ -266,11 +272,11 @@ public class MainProgram {
                     break;
                 }
                 case 9:{
-                    scrie(echipamente);
+                    serialize(echipamente);
                     break;
                 }
                 case 10:{
-                    echipamente = citeste();
+                    echipamente = deserialize();
                     if(echipamente == null) echipamente = new ArrayList<>();
                     break;
                 }
