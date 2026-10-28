@@ -8,16 +8,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Program principal pentru lucrul cu liste de {@link PerecheNumere} în format JSON.
- */
 public class MainPerechi {
     private static final File FISIER = new File("src/main/resources/perechi.json");
-
-    /**
-     * Salvează lista de perechi în fișierul JSON.
-     * @param lista lista de salvat
-     */
     static void scriere(List<PerecheNumere> lista) {
         try {
             new ObjectMapper().writerWithDefaultPrettyPrinter().writeValue(FISIER, lista);
@@ -25,11 +17,6 @@ public class MainPerechi {
             e.printStackTrace();
         }
     }
-
-    /**
-     * Încarcă lista de perechi din fișierul JSON.
-     * @return lista citită sau null în caz de eroare
-     */
     static List<PerecheNumere> citire() {
         try {
             return new ObjectMapper().readValue(FISIER, new TypeReference<List<PerecheNumere>>() {});
