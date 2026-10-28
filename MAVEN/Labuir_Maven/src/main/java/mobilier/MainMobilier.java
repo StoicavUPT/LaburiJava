@@ -7,16 +7,9 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
-/**
- * Citește piesele de mobilier din JSON și afișează informații despre ele.
- */
+
 public class MainMobilier {
 
-    /**
-     * Citește lista de mobilier din fișierul JSON.
-     * @param cale calea fișierului
-     * @return lista citită sau null în caz de eroare
-     */
     static List<Mobilier> citire(String cale) {
         try {
             return new ObjectMapper().readValue(new File(cale), new TypeReference<List<Mobilier>>() {});
@@ -26,7 +19,6 @@ public class MainMobilier {
         }
     }
 
-    /** Afișează toate piesele și plăcile lor (cerințele a și b). */
     static void afisareToate(List<Mobilier> lista) {
         for (Mobilier m : lista) {
             System.out.println(m);
@@ -34,7 +26,6 @@ public class MainMobilier {
         }
     }
 
-    /** Afișează plăcile unei piese după nume (cerința c). */
     static void afisarePlaci(List<Mobilier> lista, String nume) {
         for (Mobilier m : lista) {
             if (m.getNume().equalsIgnoreCase(nume)) {
@@ -46,7 +37,6 @@ public class MainMobilier {
         System.out.println("Nu exista piesa " + nume);
     }
 
-    /** Afișează numărul estimat de coli pentru o piesă (cerința d). */
     static void afisareColi(List<Mobilier> lista, String nume) {
         for (Mobilier m : lista) {
             if (m.getNume().equalsIgnoreCase(nume)) {
