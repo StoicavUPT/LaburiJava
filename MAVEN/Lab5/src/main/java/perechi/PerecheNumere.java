@@ -44,7 +44,7 @@ public class PerecheNumere {
         return x / p * y;
     }
 
-    private static int sumaCifrelor(int n) {
+    private int sumaCifrelor(int n) {
         long m = Math.abs((long) n);
         int s = 0;
         while (m > 0) {
@@ -54,7 +54,7 @@ public class PerecheNumere {
         return s;
     }
 
-    private static int cifrePare(int n) {
+    private int cifrePare(int n) {
         long m = Math.abs((long) n);
         if (m == 0) return 1; // cifra 0 este pară
         int c = 0;
